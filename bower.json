@@ -1,0 +1,14 @@
+{
+    "name": "anon.to",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": {
+        "jquery": "latest",
+        "bootstrap-sass": "latest",
+        "bootswatch": "latest",
+        "fontawesome": "latest",
+        "sweetalert": "latest",
+        "Respond": "latest",
+        "html5shiv": "latest"
+    }
+}
