@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'cookie' => 'laravel_session',
+    'cookie' => env('APP_PREFIX', 'laravel') . '_session',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,5 +162,4 @@ return [
     */
 
     'http_only' => true,
-
 ];
