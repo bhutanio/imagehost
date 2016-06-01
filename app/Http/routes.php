@@ -13,6 +13,6 @@ Route::delete('image/delete/{id}', 'Image\UploadImageController@ajaxDelete')->mi
 Route::post('image/create', 'Image\UploadImageController@create');
 
 Route::get('/', function () {
-    meta()->setMeta('ImageZ');
+    meta()->setMeta('ImageZ', 'ImageZ - Free and Secure Image Hosting & Photo Sharing');
     return view('home');
 });
