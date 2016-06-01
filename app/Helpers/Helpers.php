@@ -66,9 +66,10 @@ function computer_size($number, $size)
 function image_embed_codes($images, $type = null)
 {
     $embed = '';
-    if (count($images) < 2) {
+    if (!($images instanceof \Illuminate\Support\Collection)) {
         $images = [$images];
     }
+
     foreach ($images as $image) {
         $image_url = asset_cdn('i/' . $image->hash . '.' . $image->image_extension);
         if ($type == 'html') {

@@ -70,15 +70,17 @@ class UploadImageController extends Controller
         }
 
         $file_hash = sha1_file($image_file->getRealPath());
-        if (!Auth::check()) {
-            $dupe_image = Images::where('file_hash', $file_hash)->where('created_by', 1)->first();
-            if ($dupe_image) {
-                $output['success'] = true;
-                $output['imageId'] = $dupe_image->id;
 
-                return response()->json($output, 200);
-            }
-        }
+// TODO: Find a better way to handle duplicate uploads
+//        if (!Auth::check()) {
+//            $dupe_image = Images::where('file_hash', $file_hash)->where('created_by', 1)->first();
+//            if ($dupe_image) {
+//                $output['success'] = true;
+//                $output['imageId'] = $dupe_image->id;
+//
+//                return response()->json($output, 200);
+//            }
+//        }
 
         $extension = $this->mimeToExtension($image_file->getMimeType());
         if (!in_array($extension, ['jpg', 'gif', 'png'])) {
