@@ -9,6 +9,7 @@
         "fontawesome": "latest",
         "sweetalert": "latest",
         "Respond": "latest",
-        "html5shiv": "latest"
+        "html5shiv": "latest",
+        "fine-uploader": "latest"
     }
 }

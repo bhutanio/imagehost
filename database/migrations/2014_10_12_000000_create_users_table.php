@@ -20,6 +20,9 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::unprepared("INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES (NULL, 'Anonymous', 'anonymous@imagez.to', '', NULL, NULL, NULL);");
+        DB::unprepared("INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES (NULL, 'Admin', 'admin@imagez.to', '', NULL, NULL, NULL);");
     }
 
     /**

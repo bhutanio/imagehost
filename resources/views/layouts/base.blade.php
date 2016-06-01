@@ -6,6 +6,7 @@
     <title>{{ meta()->metaTitle() }}</title>
     <meta name="description" content="{{ meta()->description() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_token" content="{{ csrf_token() }}">
     <meta name="_base_url" content="{{ url('/') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,500,700' rel='stylesheet' type='text/css'>

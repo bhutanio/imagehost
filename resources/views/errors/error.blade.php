@@ -10,15 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_token" content="{{ csrf_token() }}">
     <meta name="_base_url" content="{{ url('/') }}">
-    <link rel="shortcut icon" href="{{ asset_cdn('images/'.env('SITE_ID').'-favicon.png') }}">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,500,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway:300,500,700' rel='stylesheet' type='text/css'>
 
-    <link href="{{ asset_cdn('css/style.css?v='.asset_version()) }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?v='.asset_version()) }}" rel="stylesheet">
     @yield('header_css')
 
 <!--[if lte IE 8]>
-    <script src="{{ asset_cdn('js/html5shiv.respond.min.js') }}"></script><![endif]-->
+    <script src="{{ asset('js/html5shiv.respond.min.js') }}"></script><![endif]-->
 </head>
 
 <body>

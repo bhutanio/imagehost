@@ -1,52 +1,64 @@
 var BASEURL = $('meta[name=_base_url]').attr('content');
+var CSRFTOKEN = $('meta[name=_token]').attr('content');
 
-var shortenUrl = function () {
-    $('input[name="short_url"]').on('click', function () {
-        $(this).select();
+(function () {
+    var fuploader = $('#images_fileuploader').fineUploader({
+        template: "upload-template",
+        thumbnails: {
+            placeholders: {
+                waitingPath: BASEURL + "/images/fuwaiting-generic.png",
+                notAvailablePath: BASEURL + "/images/funot_available-generic.png"
+            }
+        },
+        request: {
+            endpoint: BASEURL + '/image/upload',
+            params: {_token: CSRFTOKEN}
+        },
+        editFilename: {
+            enabled: false
+        },
+        retry: {
+            enableAuto: false
+        },
+        chunking: {
+            enabled: false
+        },
+        deleteFile: {
+            enabled: true,
+            method: "DELETE",
+            endpoint: BASEURL + '/image/delete',
+            params: {_token: CSRFTOKEN}
+        },
+        autoUpload: false,
+        validation: {
+            allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+            sizeLimit: 20971520 // 20 Mb
+        },
+        callbacks: {
+            onAllComplete: function (s, f) {
+                if (s.length > 0) {
+                    $('#form_upload').submit();
+                }
+            }
+        }
+    }).on('error', function (event, id, name, errorReason) {
+        var fileEl = fuploader.fineUploader("getItemByFileId", id);
+        fileEl.find('.upload-error')
+            .removeClass('hidden')
+            .find('.error-msg').text('Error: ' + errorReason);
+    }).on('complete', function (event, id, name, response) {
+        if (response.success) {
+            var image_id = response.imageId;
+            var fileEl = fuploader.fineUploader("getItemByFileId", id),
+                imageEl = fileEl.find(".uploaded-image");
+
+            imageEl.html('<input name="images[]" type="hidden" value="' + image_id + '">');
+            fuploader.fineUploader("setUuid", id, image_id);
+        }
     });
 
-    $('#form_shortener').on('submit', function (e) {
-        var form = $(this);
-
-        form.find('.form-error').remove();
-        form.find(':submit').addClass('disabled').attr('disabled', 'disabled');
-        form.find('.shorten-output').append('<i class="save-spinner glyphicon glyphicon-refresh glyphicon-spin"></i>');
-
-        $.ajax({
-            url: form.attr("action"),
-            type: 'POST',
-            data: form.serializeArray(),
-            dataType: 'json'
-        }).done(function (data) {
-            form.find('.input-group').removeClass('has-error');
-            if (data && data.url) {
-                form.find('.short-url-group').removeClass('hidden');
-                form.find('input[name="short_url"]').val(data.url);
-            }
-        }).fail(function (jqXHR) {
-            form.find('.short-url-group').addClass('hidden');
-            form.find('.input-group').addClass('has-error');
-            if ($.type(jqXHR.responseJSON) == 'string') {
-                form.find('.shorten-output').append('<span class="help-block form-error text-danger">' + jqXHR.responseJSON + '</span>');
-            } else if ($.type(jqXHR.responseJSON) == 'object') {
-                $.each(jqXHR.responseJSON, function (index, value) {
-                    if (value.length != 0) {
-                        form.find('.shorten-output').append('<span class="help-block form-error text-danger">' + value + '</span>');
-                    }
-                });
-            } else {
-                form.find('.shorten-output').append('<span class="help-block form-error text-danger">' + jqXHR.statusText + '</span>');
-            }
-        }).always(function () {
-            form.find('.save-spinner').remove();
-            form.find(':submit').removeClass('disabled').removeAttr('disabled');
-        });
+    $('#btn_upload').click(function (e) {
+        fuploader.fineUploader('uploadStoredFiles');
         e.preventDefault();
     });
-    $.ajax({
-        url: BASEURL + '/csrf',
-        type: 'GET'
-    }).done(function (data) {
-        $('input[name="_token"]').val(data);
-    });
-};
+})();
