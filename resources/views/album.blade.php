@@ -13,14 +13,25 @@
 
 @section('content')
     <section class="container">
+        <h1 class="page-title">{{ meta()->pageTitle() }}</h1>
+        @if(!empty($album->album_description))
+            <p>{{ $album->album_description }}</p>
+        @endif
         <div class="block">
             <div class="block-image pull-right">
                 <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#embedModal">Embed</button>
             </div>
+            <div class="clearfix"></div>
 
             @foreach($album->images as $image)
                 <div class="block-image">
+                    @if(!empty($image->image_title))
+                        <h3>{{ $image->image_title }}</h3>
+                    @endif
                     <a href="{{ url('i/'.$image->hash) }}" title=""><img src="{{ asset_cdn('i/'.$image->hash.'.'.$image->image_extension) }}" alt=""></a>
+                    @if(!empty($image->image_description))
+                        <p>{{ $image->image_description }}</p>
+                    @endif
                 </div>
             @endforeach
         </div>

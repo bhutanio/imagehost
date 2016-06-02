@@ -30,7 +30,7 @@ class ViewImagesController extends Controller
     public function album($hash)
     {
         $album = Albums::where('hash', $hash)->with('images')->firstOrFail();
-
+        $this->meta->setMeta(($album->album_title ? $album->album_title : 'Album '.$album->hash));
         return view('album', compact('album'));
     }
 
@@ -42,7 +42,7 @@ class ViewImagesController extends Controller
         }
 
         $image = Images::where('hash', $hash)->firstOrFail();
-
+        $this->meta->setMeta(($image->image_title ? $image->image_title : 'Image '.$image->hash));
         return view('image', compact('image'));
     }
 

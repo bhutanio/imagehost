@@ -8,13 +8,13 @@
 }
 
 body {
-  padding: 100px 0;
+  padding: 80px 0;
   font-size: ($font-size-base + 1);
   font-weight: 300;
 }
 
 .page-title {
-  text-align: center;
+  margin-top: 2px;
 }
 
 .block {
@@ -39,8 +39,18 @@ body {
 
 .block-image {
   margin-bottom: 20px;
+  background-color: lighten($well-bg, 2%);
   img {
     max-width: 100%;
+  }
+  h2, h3 {
+    margin: 0;
+    padding: 4px;
+    font-size: 18px;
+  }
+  p {
+    padding: 4px;
+    font-size: 14px;
   }
 }
 

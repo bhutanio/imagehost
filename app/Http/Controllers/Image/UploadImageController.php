@@ -41,8 +41,10 @@ class UploadImageController extends Controller
                 }
 
                 $album = Albums::create([
-                    'hash'       => $hash,
-                    'created_by' => (Auth::check()) ? Auth::id() : 1,
+                    'hash'              => $hash,
+                    'album_title'       => $this->request->get('title'),
+                    'album_description' => $this->request->get('description'),
+                    'created_by'        => (Auth::check()) ? Auth::id() : 1,
                 ]);
 
                 Images::whereIn('id', $images)->update(['album_id' => $album->id]);
@@ -50,7 +52,12 @@ class UploadImageController extends Controller
                 return redirect('a/' . $album->hash);
             }
 
-            return redirect('i/' . Images::find($images['0'])->hash);
+            $image = Images::find($images['0']);
+            $image->image_title = $this->request->get('title');
+            $image->image_description = $this->request->get('description');
+            $image->save();
+
+            return redirect('i/' . $image->hash);
         }
 
         return redirect()->back();
