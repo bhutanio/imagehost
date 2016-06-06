@@ -28,7 +28,7 @@
                     @if(!empty($image->image_title))
                         <h3>{{ $image->image_title }}</h3>
                     @endif
-                    <a href="{{ url('i/'.$image->hash) }}" title=""><img src="{{ asset_cdn('i/'.$image->hash.'.'.$image->image_extension) }}" alt=""></a>
+                    <a href="{{ url('i/'.$image->hash) }}" title="{{ ($image->image_title ? $image->image_title : 'Image '.$image->hash) }}"><img src="{{ asset_cdn('i/'.$image->hash.'.'.$image->image_extension) }}" alt=""></a>
                     @if(!empty($image->image_description))
                         <p>{{ $image->image_description }}</p>
                     @endif

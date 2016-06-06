@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function boot(Router $router)
@@ -32,14 +32,14 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)
     {
+        $this->mapStaticRoutes($router);
+        $this->mapApiRoutes($router);
         $this->mapWebRoutes($router);
-
-        //
     }
 
     /**
@@ -47,15 +47,52 @@ class RouteServiceProvider extends ServiceProvider
      *
      * These routes all receive session state, CSRF protection, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapWebRoutes(Router $router)
     {
         $router->group([
-            'namespace' => $this->namespace, 'middleware' => 'web',
+            'namespace'  => $this->namespace,
+            'middleware' => ['web'],
         ], function ($router) {
-            require app_path('Http/routes.php');
+            require app_path('Http/Routes/web.php');
+        });
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes does not load session and cookies.
+     *
+     * @param  \Illuminate\Routing\Router $router
+     * @return void
+     */
+    private function mapApiRoutes($router)
+    {
+        $router->group([
+            'namespace'  => $this->namespace,
+            'middleware' => ['api'],
+        ], function ($router) {
+            require app_path('Http/Routes/api.php');
+        });
+    }
+
+    /**
+     * Define the "static" routes for the application.
+     *
+     * These routes does not load session and cookies.
+     *
+     * @param  \Illuminate\Routing\Router $router
+     * @return void
+     */
+    private function mapStaticRoutes($router)
+    {
+        $router->group([
+            'namespace'  => $this->namespace,
+            'middleware' => ['static'],
+        ], function ($router) {
+            require app_path('Http/Routes/static.php');
         });
     }
 }

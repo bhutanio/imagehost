@@ -30,27 +30,50 @@ class ViewImagesController extends Controller
     public function album($hash)
     {
         $album = Albums::where('hash', $hash)->with('images')->firstOrFail();
-        $this->meta->setMeta(($album->album_title ? $album->album_title : 'Album '.$album->hash));
+        $this->meta->setMeta(($album->album_title ? $album->album_title : 'Album ' . $album->hash));
+
         return view('album', compact('album'));
     }
 
-    public function image($hash)
+    public function image($hash, $extension = null)
     {
-        $path = pathinfo($hash);
-        if (!empty($path['extension']) && !empty($path['filename'])) {
-            return $this->imageFile($path['filename']);
+        if ($extension) {
+            return $this->imageFile($hash);
         }
 
         $image = Images::where('hash', $hash)->firstOrFail();
-        $this->meta->setMeta(($image->image_title ? $image->image_title : 'Image '.$image->hash));
+        $this->meta->setMeta(($image->image_title ? $image->image_title : 'Image ' . $image->hash));
+
         return view('image', compact('image'));
     }
 
-    private function imageFile($hash)
+    public function thumbnail($hash, $extension)
+    {
+        if ($hash && $extension) {
+            return $this->imageFile($hash, true);
+        }
+
+        abort(404, 'Image Not Found!');
+    }
+
+    private function imageFile($hash, $thumb = false)
     {
         $image = Images::where('hash', $hash)->firstOrFail();
 
-        $image_file = $this->imager->setImage($this->filer->type('images')->get($image->hash . '.' . $image->image_extension));
+        $file_content = $this->filer->type('images')->get($image->hash . '.' . $image->image_extension);
+        $image_file = $this->imager->setImage($file_content);
+
+        if ($thumb) {
+            $image_file->fit(150, 100);
+        }
+
+        if ($image->image_extension == 'gif' && !$thumb) {
+            return response($file_content, 200,
+                [
+                    'Content-Type'  => 'image/gif',
+                    'Cache-Control' => 'public,max-age=' . (3600 * 24 * 7) . ',s-maxage=' . (3600 * 24 * 7),
+                ])->setExpires(carbon()->addDays(7));
+        }
 
         return $image_file->response()
             ->setExpires(carbon()->addDays(7))

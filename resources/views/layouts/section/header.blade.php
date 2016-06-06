@@ -14,8 +14,19 @@
 
             <ul class="nav navbar-nav pull-right">
                 @if(auth()->check())
-                    <li class="{{ request()->is('my') ? 'active' : ''  }}">
-                        <a href="{{ url('my') }}" title="My Images">My Images</a>
+                    <li class="dropdown{{ (request()->is('my*')) ? ' active' : ''  }}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }}
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url('my') }}" title="My Uploads">My Uploads</a></li>
+                            @if(auth()->id() == 2)
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ url('admin') }}"><i class="fa fa-gears"></i> Admin Panel</a></li>
+                            @endif
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url('auth/logout') }}"><i class="fa fa-lock"></i> Logout</a>
+                            </li>
+                        </ul>
                     </li>
                 @else
                     <li class="{{ request()->is('auth/login') ? 'active' : ''  }}">
