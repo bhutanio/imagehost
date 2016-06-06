@@ -33,6 +33,7 @@ class UploadImageController extends Controller
 
     public function create()
     {
+//        dd($this->request->get('images'));
         if ($images = $this->request->get('images')) {
             if (count($images) > 1) {
                 $hash = $this->generateHash();

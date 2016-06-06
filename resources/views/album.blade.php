@@ -23,7 +23,7 @@
             </div>
             <div class="clearfix"></div>
 
-            @foreach($album->images as $image)
+            @foreach($images as $image)
                 <div class="block-image">
                     @if(!empty($image->image_title))
                         <h3>{{ $image->image_title }}</h3>
@@ -35,6 +35,7 @@
                 </div>
             @endforeach
         </div>
+        <div class="pull-left" style="">{!! $images->render() !!}</div>
     </section>
 
     @include('blocks.embed', ['image' => $album->images])

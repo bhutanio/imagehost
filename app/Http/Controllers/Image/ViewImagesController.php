@@ -29,10 +29,11 @@ class ViewImagesController extends Controller
 
     public function album($hash)
     {
-        $album = Albums::where('hash', $hash)->with('images')->firstOrFail();
+        $album = Albums::where('hash', $hash)->with(['images'])->firstOrFail();
+        $images = Images::where('album_id', $album->id)->paginate(20);
         $this->meta->setMeta(($album->album_title ? $album->album_title : 'Album ' . $album->hash));
 
-        return view('album', compact('album'));
+        return view('album', compact('album', 'images'));
     }
 
     public function image($hash, $extension = null)
