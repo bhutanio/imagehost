@@ -54,7 +54,10 @@ class UploadImageController extends Controller
             }
 
             $image = Images::find($images['0']);
-            $image->image_title = $this->request->get('title');
+            if (!empty($this->request->get('title'))) {
+                $image->image_title = $this->request->get('title');
+            }
+
             $image->image_description = $this->request->get('description');
             $image->save();
 
@@ -117,6 +120,7 @@ class UploadImageController extends Controller
         $imagedb = Images::create([
             'hash'            => $hash,
             'file_hash'       => $file_hash,
+            'image_title'     => $this->guessImageTitle($image_file->getClientOriginalName()),
             'image_extension' => $extension,
             'image_width'     => $image->getInfo()['width'],
             'image_height'    => $image->getInfo()['height'],
@@ -666,5 +670,13 @@ class UploadImageController extends Controller
         ];
 
         return isset($mimes[$mime]) ? $mimes[$mime] : null;
+    }
+
+    private function guessImageTitle($name)
+    {
+        $filename = pathinfo($name, PATHINFO_FILENAME);
+        $filename = str_replace('_', '-', $filename);
+
+        return title_case(str_slug($filename, ' '));
     }
 }
