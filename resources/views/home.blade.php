@@ -36,12 +36,12 @@
         <div class="form-group">
             <div class="col-lg-1 col-md-1 col-sm-2"><label for="private" class="control-label">Private: </label></div>
             <div class="col-lg-1 col-md-1 col-sm-2">
-                <label class="control-label">{!! Form::radio('private', 1, (old('private') ? old('private') : true), []) !!} Yes </label>
+                <label class="control-label">{!! Form::radio('private', 1, (old('private') ? old('private') : false), []) !!} Yes </label>
             </div>
             <div class="col-lg-1 col-md-1 col-sm-2">
-                <label class="control-label">{!! Form::radio('private', 0, (old('private') ? old('private') : false), []) !!} No </label>
+                <label class="control-label">{!! Form::radio('private', 0, (old('private') ? old('private') : true), []) !!} No </label>
             </div>
-            <div class="col-sm-12"><p class="help-block">Should this image be publicly accessible?</p></div>
+            <div class="col-sm-12"><p class="help-block">Should this image be hidden from search engines?</p></div>
         </div>
 
         <div class="form-group">
