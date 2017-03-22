@@ -46,7 +46,7 @@ class AdminImagesController extends Controller
 
         $data = [
             'url'    => 'admin',
-            'albums' => Albums::with(['images'])->latest()->paginate(10),
+            'albums' => Albums::with(['images'])->latest()->paginate(20),
         ];
 
         return view('my.albums', $data);
@@ -58,7 +58,7 @@ class AdminImagesController extends Controller
 
         $data = [
             'url'    => 'admin',
-            'images' => Images::whereNull('album_id')->latest()->paginate(20),
+            'images' => Images::whereNull('album_id')->latest()->paginate(48),
         ];
 
         return view('my.images', $data);
