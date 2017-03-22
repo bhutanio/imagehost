@@ -11,7 +11,7 @@ const BASEURL = $('meta[name=_base_url]').attr('content');
     'use strict';
 
     $(window).on('load resize', function () {
-        $('#content-area').css('min-height', $(window).height() - ($('header').height() + $('footer').height() + 180) + 'px');
+        $('#content-area').css('min-height', $(window).height() - ($('header').height() + $('footer').height() + 80) + 'px');
         let navHeight = $('.navbar-fixed-top').height();
         $('body').css('padding-top', navHeight + 'px');
     });
