@@ -15,9 +15,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Auth::routes();
-
-Route::get('a/{hash}', 'Image\ViewImagesController@album');
-Route::get('i/{hash}', 'Image\ViewImagesController@image');
+Route::get('activate/{token}', 'Auth\ActivationController@activate');
 
 Route::post('image/upload', 'Image\UploadImageController@ajaxUpload')->middleware(['ajax']);
 Route::delete('image/delete', 'Image\UploadImageController@ajaxDelete')->middleware(['ajax']);
