@@ -47,7 +47,7 @@ class MyImagesController extends Controller
 
         $data = [
             'url'    => 'my',
-            'albums' => Albums::with(['images'])->where('created_by', Auth::id())->latest()->paginate(10),
+            'albums' => Albums::with(['images'])->where('created_by', Auth::id())->latest()->paginate(20),
         ];
 
         return view('my.albums', $data);
@@ -59,7 +59,7 @@ class MyImagesController extends Controller
 
         $data = [
             'url'    => 'my',
-            'images' => Images::where('created_by', Auth::id())->whereNull('album_id')->latest()->paginate(20),
+            'images' => Images::where('created_by', Auth::id())->whereNull('album_id')->latest()->paginate(48),
         ];
 
         return view('my.images', $data);
