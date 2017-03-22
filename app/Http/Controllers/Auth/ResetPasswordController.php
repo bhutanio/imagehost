@@ -20,4 +20,20 @@ class ResetPasswordController extends Controller
 
         $this->meta->setMeta('Reset Password');
     }
+
+    protected function rules()
+    {
+        return [
+            'token'    => 'required',
+            'email'    => 'required|email',
+            'password' => 'required|confirmed|min:6',
+        ];
+    }
+
+    protected function validationErrorMessages()
+    {
+        return [
+            'password.password_policy' => 'Choose a stronger password, at least one uppercase letter with number or symbol.',
+        ];
+    }
 }

@@ -6,6 +6,7 @@
         @if($albums->count())
             @foreach($albums as $album)
                 <div class="block-image">
+                    <button type="button" data-album-id="{{ $album->id }}" class="btn_delete_album btn btn-sm btn-danger pull-right"><i class="fa fa-trash-o"></i></button>
                     <h3>
                         <a href="{{ url('a/'.$album->hash) }}" title="{{ ($album->album_title ? $album->album_title : 'Album '.$album->hash) }}">{{ ($album->album_title ? $album->album_title : 'Album '.$album->hash) }}</a>
                         <span class=""> ({{ $album->images->count() }} Images)</span>

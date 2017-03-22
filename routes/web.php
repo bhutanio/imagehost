@@ -20,7 +20,7 @@ Route::get('a/{hash}', 'Image\ViewImagesController@album');
 Route::get('i/{hash}', 'Image\ViewImagesController@image');
 
 Route::post('image/upload', 'Image\UploadImageController@ajaxUpload')->middleware(['ajax']);
-Route::delete('image/delete/{id}', 'Image\UploadImageController@ajaxDelete')->middleware(['ajax']);
+Route::delete('image/delete', 'Image\UploadImageController@ajaxDelete')->middleware(['ajax']);
 
 Route::post('image/create', 'Image\UploadImageController@create');
 

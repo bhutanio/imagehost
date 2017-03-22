@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Image;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\DeleteImage;
 use App\Models\Albums;
 use App\Models\Images;
 use App\Services\Filer;
@@ -143,11 +144,40 @@ class UploadImageController extends Controller
 
     public function ajaxDelete()
     {
-        $output = [];
+        if (!Auth::check() || Auth::id() == 1) {
+            return response()->json('Access Denied!', 403);
+        }
 
-        $output['success'] = true;
+        $id = (int)$this->request->get('id');
+        if (empty($id)) {
+            return response()->json('Invalid ID!', 422);
+        }
 
-        return response()->json($output, 200);
+        if ($this->request->get('action') == 'Album') {
+            $album = Albums::with('images')->findOrFail($id);
+            if ($album->created_by == Auth::id() || Auth::id() == 2) {
+                if (!empty($album->images)) {
+                    foreach ($album->images as $image) {
+                        $this->dispatch(new DeleteImage($image->id));
+                    }
+                    $album->delete();
+
+                    return response()->json('Album Deleted Successfully!', 200);
+                }
+            }
+        }
+
+        if ($this->request->get('action') == 'Image') {
+            $image = Images::findOrFail($id);
+            if ($image->created_by == Auth::id() || Auth::id() == 2) {
+                $this->dispatch(new DeleteImage($image->id));
+                $image->delete();
+
+                return response()->json('Image Deleted Successfully!', 200);
+            }
+        }
+
+        return response()->json('System Error!', 422);
     }
 
     private function generateHash($length = 6)

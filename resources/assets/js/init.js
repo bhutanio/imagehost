@@ -2,6 +2,8 @@ if (typeof jQuery === 'undefined') {
     throw new Error('Requires jQuery')
 }
 
+import swal from "sweetalert2";
+
 const CSRFTOKEN = $('meta[name=_token]').attr('content');
 const BASEURL = $('meta[name=_base_url]').attr('content');
 
@@ -10,8 +12,6 @@ const BASEURL = $('meta[name=_base_url]').attr('content');
 
     $(window).on('load resize', function () {
         $('#content-area').css('min-height', $(window).height() - ($('header').height() + $('footer').height() + 80) + 'px');
-        let navHeight = $('.navbar-fixed-top').height();
-        $('body').css('padding-top', navHeight + 'px');
     });
 
     // Tooltip
@@ -105,5 +105,50 @@ const BASEURL = $('meta[name=_base_url]').attr('content');
         fuploader.fineUploader('uploadStoredFiles');
         e.preventDefault();
     });
+
+    $('.btn_delete_album, .btn_delete_image').click(function (e) {
+        let album_id = $(this).data('album-id');
+        let image_id = $(this).data('image-id');
+
+        let delete_type = 'Album';
+        let data_id = album_id;
+        if (!isNaN(image_id)) {
+            delete_type = 'Image';
+            data_id = image_id;
+        }
+
+        swal({
+            title: 'Delete this ' + delete_type + '?',
+            text: 'Are you sure, you want to delete this ' + delete_type + '?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            allowOutsideClick: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve, reject) {
+                    return $.ajax({
+                        url: BASEURL + '/image/delete',
+                        type: 'DELETE',
+                        data: {'_token': CSRFTOKEN, 'action': delete_type, 'id': data_id},
+                        dataType: 'json'
+                    }).done(function (msg) {
+                        resolve();
+                    }).fail(function (jqXHR) {
+                        reject('Error: ' + ((jqXHR.responseJSON) ? jqXHR.responseJSON : jqXHR.statusText));
+                    });
+                });
+            }
+        }).then(function () {
+            swal(delete_type + " Deleted!", delete_type + " deleted successfully.", "success");
+        }, function () {
+            swal.resetDefaults()
+        });
+
+        e.preventDefault();
+    })
 
 })(jQuery);

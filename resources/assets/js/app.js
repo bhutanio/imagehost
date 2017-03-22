@@ -7,4 +7,5 @@ window.$ = window.jQuery = require('jquery');
 // };
 require('bootstrap-sass');
 require("fine-uploader/lib/jquery/traditional");
+
 require('./init');

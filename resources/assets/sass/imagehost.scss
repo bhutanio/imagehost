@@ -9,14 +9,11 @@
 body {
   font-size: ($font-size-base + 1);
   font-weight: 300;
+  margin-top: 80px;
 }
 
 .page-title {
   margin-top: 2px;
-}
-
-.content {
-  margin-top: 20px;
 }
 
 .block {
@@ -102,4 +99,11 @@ body {
 .panel-heading h1 {
   margin: 2px 0;
   font-size: $font-size-h3;
+}
+
+.btn_delete_image {
+  position: absolute;
+  bottom: 68px;
+  right: 22px;
+  @include opacity(0.8);
 }
