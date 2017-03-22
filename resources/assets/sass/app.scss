@@ -1,12 +1,19 @@
-$font-family-sans-serif: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-$font-family-heading: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-$headings-font-family: $font-family-heading;
-$icon-font-path: "../fonts/";
-$web-font-path: "";
+// Variables
+@import "variables";
 
-@import "../../../bower_components/bootswatch/flatly/variables";
-@import "../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "../../../bower_components/bootswatch/flatly/bootswatch";
-@import "../../../bower_components/sweetalert/dev/sweetalert";
-@import "fine-uploader";
+// Bootstrap
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "node_modules/bootswatch/flatly/variables";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootswatch/flatly/bootswatch";
+
+// FontAwesome
+$fa-font-path:        "~font-awesome/fonts";
+@import "node_modules/font-awesome/scss/font-awesome";
+
+// Fine-Uploader
+@import "node_modules/fine-uploader/fine-uploader/fine-uploader";
+@import "node_modules/fine-uploader/fine-uploader/fine-uploader-new";
+@import "node_modules/fine-uploader/fine-uploader/fine-uploader-gallery";
+
 @import "imagehost";

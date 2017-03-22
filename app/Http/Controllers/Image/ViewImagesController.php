@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Image;
 use App\Http\Controllers\Controller;
 use App\Models\Albums;
 use App\Models\Images;
-use Bhutanio\Laravel\Services\Filer;
-use Bhutanio\Laravel\Services\Imager;
+use App\Services\Filer;
+use App\Services\Imager;
 
 class ViewImagesController extends Controller
 {
@@ -36,8 +36,9 @@ class ViewImagesController extends Controller
         return view('album', compact('album', 'images'));
     }
 
-    public function image($hash, $extension = null)
+    public function image($hash)
     {
+        $extension = str_contains($hash, '.');
         if ($extension) {
             return $this->imageFile($hash);
         }
@@ -48,27 +49,32 @@ class ViewImagesController extends Controller
         return view('image', compact('image'));
     }
 
-    public function thumbnail($hash, $extension)
+    public function thumbnail($hash)
     {
-        if ($hash && $extension) {
+        if ($hash) {
             return $this->imageFile($hash, true);
         }
 
         abort(404, 'Image Not Found!');
     }
 
-    private function imageFile($hash, $thumb = false)
+    private function imageFile($filename, $thumb = false)
     {
-        $image = Images::where('hash', $hash)->firstOrFail();
+//        $hash = explode('.', $hash)[0];
+//        $image = Images::where('hash', $hash)->firstOrFail();
 
-        $file_content = $this->filer->type('images')->get($image->hash . '.' . $image->image_extension);
+        $file_content = $this->filer->type('images')->get($filename);
+        if (empty($file_content)) {
+            abort(404, 'Image Not Found');
+        }
+
         $image_file = $this->imager->setImage($file_content);
 
         if ($thumb) {
             $image_file->fit(150, 100);
         }
 
-        if ($image->image_extension == 'gif' && !$thumb) {
+        if (str_contains($filename, '.gif') && !$thumb) {
             return response($file_content, 200,
                 [
                     'Content-Type'  => 'image/gif',

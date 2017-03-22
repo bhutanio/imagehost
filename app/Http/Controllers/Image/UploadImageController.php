@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Image;
 use App\Http\Controllers\Controller;
 use App\Models\Albums;
 use App\Models\Images;
+use App\Services\Filer;
+use App\Services\Imager;
 use Auth;
-use Bhutanio\Laravel\Services\Filer;
-use Bhutanio\Laravel\Services\Imager;
 use File;
 use Illuminate\Support\Str;
 

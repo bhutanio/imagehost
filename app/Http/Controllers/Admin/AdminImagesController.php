@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Albums;
 use App\Models\Images;
-use Auth;
-use Bhutanio\Laravel\Services\Filer;
-use Bhutanio\Laravel\Services\Imager;
+use App\Services\Filer;
+use App\Services\Imager;
 
 class AdminImagesController extends Controller
 {
@@ -23,10 +22,6 @@ class AdminImagesController extends Controller
 
     public function __construct()
     {
-        if (Auth::id() != 2) {
-            abort(403, 'Access Denied!');
-        }
-
         parent::__construct();
         $this->filer = app(Filer::class);
         $this->imager = app(Imager::class);

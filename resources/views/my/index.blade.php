@@ -1,7 +1,4 @@
-@extends('layouts.base')
-
-@section('page_title')
-@endsection
+@extends('layouts.app')
 
 @section('content')
     <section class="container">

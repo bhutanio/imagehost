@@ -4,7 +4,7 @@
 @endsection
 
 @section('error_title')
-    <i class="fa fa-times text-danger"></i> Error 403: {{ $exception->getMessage() ?: 'Access Denied!' }}
+    <i class="fa fa-times text-danger"></i> Error 403: Access Denied!
 @endsection
 
 @section('error_message')

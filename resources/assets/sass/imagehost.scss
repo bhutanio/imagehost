@@ -17,6 +17,10 @@ body {
   margin-top: 2px;
 }
 
+.content {
+  margin-top: 20px;
+}
+
 .block {
   display: block;
   margin-bottom: 40px;
@@ -54,8 +58,8 @@ body {
   }
 }
 
-.footer {
-  padding: 20px 0;
+.footer-top {
+  padding: 10px 0;
   color: dynamic-text-color($navbar-default-bg);
   background: $navbar-default-bg;
 }

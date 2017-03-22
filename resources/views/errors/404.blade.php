@@ -4,5 +4,5 @@
 @endsection
 
 @section('error_title')
-    <i class="fa fa-exclamation-circle text-warning"></i> Error 404: {{ $exception->getMessage() ?: 'Page not found!' }}
+    <i class="fa fa-exclamation-circle text-warning"></i> Error 404: Page not found!
 @endsection
