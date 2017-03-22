@@ -1,8 +1,7 @@
 @function dynamic-text-color($color) {
   @if (lightness( $color ) > 40) {
     @return darken($color, 40);
-  }
-  @else {
+  } @else {
     @return lighten($color, 40);
   }
 }
@@ -30,6 +29,7 @@ body {
     clear: both;
   }
 }
+
 .block-box {
   text-align: center;
   min-height: 200px;
@@ -62,6 +62,7 @@ body {
   color: dynamic-text-color($navbar-default-bg);
   background: $navbar-default-bg;
 }
+
 .footer-bottom {
   margin: 10px 0;
 }
@@ -70,6 +71,7 @@ body {
   -webkit-animation: spin 1000ms infinite linear;
   animation: spin 1000ms infinite linear;
 }
+
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -80,6 +82,7 @@ body {
     transform: rotate(359deg);
   }
 }
+
 @keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);

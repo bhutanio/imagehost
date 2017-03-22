@@ -2,8 +2,6 @@ if (typeof jQuery === 'undefined') {
     throw new Error('Requires jQuery')
 }
 
-require("fine-uploader/lib/jquery/traditional");
-
 const CSRFTOKEN = $('meta[name=_token]').attr('content');
 const BASEURL = $('meta[name=_base_url]').attr('content');
 
@@ -90,6 +88,8 @@ const BASEURL = $('meta[name=_base_url]').attr('content');
 
                     imageEl.html('<input name="images[]" type="hidden" value="' + image_id + '">');
                     fuploader.fineUploader("setUuid", id, image_id);
+                } else {
+                    btn_upload_enable();
                 }
             },
 

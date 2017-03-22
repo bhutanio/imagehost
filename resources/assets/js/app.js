@@ -6,5 +6,5 @@ window.$ = window.jQuery = require('jquery');
 //     'X-Requested-With': 'XMLHttpRequest'
 // };
 require('bootstrap-sass');
-
+require("fine-uploader/lib/jquery/traditional");
 require('./init');

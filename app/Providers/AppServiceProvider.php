@@ -29,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
          * Singletons
          */
         $this->app->singleton(\App\Services\MetaDataService::class);
+
+        $this->app->singleton(\GeoIp2\Database\Reader::class, function () {
+            return new \GeoIp2\Database\Reader(storage_path('geoip/geolite2-country.mmdb'));
+        });
     }
 
     /**

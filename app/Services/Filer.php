@@ -228,7 +228,7 @@ class Filer
 
     private function setStorage()
     {
-        switch (env('APP_STORAGE_DEFAULT', 'local')) {
+        switch (env('APP_STORAGE', 'local')) {
             case 'local':
                 $this->storage = $this->storage_local;
                 $this->storage_type = 'local';

@@ -86,6 +86,6 @@ return [
     |
     */
 
-    'prefix' => env('APP_PREFIX', 'laravel'),
+    'prefix' => env('SITE_ID', 'laravel'),
 
 ];

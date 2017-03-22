@@ -84,3 +84,26 @@ function image_embed_codes($images, $type = null)
 
     return $embed;
 }
+
+function mime_to_extension($mime)
+{
+    try {
+        $extension = \Hoa\Mime\Mime::getExtensionsFromMime($mime);
+    } catch (\Exception $e) {
+    }
+
+    if (!empty($extension) && is_array($extension)) {
+        if ($extension[0] == 'jpeg') {
+            return 'jpg';
+        }
+
+        return $extension[0];
+    }
+
+    return null;
+}
+
+function extension_to_mime($extension)
+{
+    return \Hoa\Mime\Mime::getMimeFromExtension($extension);
+}

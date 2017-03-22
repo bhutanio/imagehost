@@ -8,7 +8,15 @@ class Albums extends Model
 {
     protected $table = 'albums';
 
-    protected $fillable = ['hash', 'album_title', 'album_description', 'created_by'];
+    protected $fillable = [
+        'hash',
+        'album_title',
+        'album_description',
+        'adult',
+        'private',
+        'expire',
+        'created_by'
+    ];
 
     public function images()
     {

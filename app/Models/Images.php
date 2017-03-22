@@ -17,6 +17,9 @@ class Images extends Model
         'image_extension',
         'image_width',
         'image_height',
+        'adult',
+        'private',
+        'expire',
         'created_by'
     ];
 }

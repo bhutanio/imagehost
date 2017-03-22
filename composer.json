@@ -1,7 +1,12 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "bhutanio/imagehost",
+    "description": "A Secure and Anonymous Image Host",
+    "keywords": [
+        "framework",
+        "laravel",
+        "image",
+        "imagehost"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -15,7 +20,8 @@
         "guzzlehttp/guzzle": "6.2.*",
         "intervention/image": "2.3.*",
         "geoip2/geoip2": "2.4.*",
-        "google/recaptcha": "1.1.*"
+        "google/recaptcha": "1.1.*",
+        "hoa/mime": "3.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -53,7 +59,8 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "php artisan optimize",
+            "wget -qO- http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz | gunzip > storage/geoip/geolite2-country.mmdb"
         ]
     },
     "config": {

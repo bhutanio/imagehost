@@ -33,8 +33,8 @@ class UploadImageController extends Controller
 
     public function create()
     {
-//        dd($this->request->get('images'));
         if ($images = $this->request->get('images')) {
+            $expire = ($this->request->get('expire') >= 43800) ? 43800 : $this->request->get('expire');
             if (count($images) > 1) {
                 $hash = $this->generateHash();
                 while (Albums::where('hash', $hash)->first()) {
@@ -43,22 +43,30 @@ class UploadImageController extends Controller
 
                 $album = Albums::create([
                     'hash'              => $hash,
-                    'album_title'       => $this->request->get('title'),
-                    'album_description' => $this->request->get('description'),
+                    'album_title'       => !empty($this->request->get('title')) ? $this->request->get('title') : null,
+                    'album_description' => !empty($this->request->get('description')) ? $this->request->get('description') : null,
+                    'adult'             => !empty($this->request->get('adult')) ? 1 : 0,
+                    'private'           => !empty($this->request->get('private')) ? 1 : 0,
+                    'expire'            => !empty($expire) ? carbon()->addMinutes($expire) : null,
                     'created_by'        => (Auth::check()) ? Auth::id() : 1,
                 ]);
 
-                Images::whereIn('id', $images)->update(['album_id' => $album->id]);
+                Images::whereIn('id', $images)->update([
+                    'album_id' => $album->id,
+                    'adult'    => !empty($this->request->get('adult')) ? 1 : 0,
+                    'private'  => !empty($this->request->get('private')) ? 1 : 0,
+                ]);
 
                 return redirect('a/' . $album->hash);
             }
 
             $image = Images::find($images['0']);
-            if (!empty($this->request->get('title'))) {
-                $image->image_title = $this->request->get('title');
-            }
+            $image->image_title = !empty($this->request->get('title')) ? $this->request->get('title') : null;
+            $image->image_description = !empty($this->request->get('description')) ? $this->request->get('description') : null;
+            $image->adult = !empty($this->request->get('adult')) ? 1 : 0;
+            $image->private = !empty($this->request->get('private')) ? 1 : 0;
+            $image->expire = !empty($expire) ? carbon()->addMinutes($expire) : null;
 
-            $image->image_description = $this->request->get('description');
             $image->save();
 
             return redirect('i/' . $image->hash);
@@ -93,7 +101,7 @@ class UploadImageController extends Controller
 //            }
 //        }
 
-        $extension = $this->mimeToExtension($image_file->getMimeType());
+        $extension = mime_to_extension($image_file->getMimeType());
         if (!in_array($extension, ['jpg', 'gif', 'png'])) {
             $output['preventRetry'] = true;
             $output['error'] = 'invalid extension. Allowed: jpg, gif, png.';
@@ -659,17 +667,6 @@ class UploadImageController extends Controller
             'writer',
             'yellow',
         ];
-    }
-
-    private function mimeToExtension($mime)
-    {
-        $mimes = [
-            'image/gif'  => 'gif',
-            'image/jpeg' => 'jpg',
-            'image/png'  => 'png',
-        ];
-
-        return isset($mimes[$mime]) ? $mimes[$mime] : null;
     }
 
     private function guessImageTitle($name)

@@ -60,8 +60,8 @@ class ViewImagesController extends Controller
 
     private function imageFile($filename, $thumb = false)
     {
-//        $hash = explode('.', $hash)[0];
-//        $image = Images::where('hash', $hash)->firstOrFail();
+        $hash = explode('.', $filename)[0];
+        $image = Images::where('hash', $hash)->firstOrFail();
 
         $file_content = $this->filer->type('images')->get($filename);
         if (empty($file_content)) {
@@ -70,20 +70,28 @@ class ViewImagesController extends Controller
 
         $image_file = $this->imager->setImage($file_content);
 
+        $response = response($file_content);
         if ($thumb) {
             $image_file->fit(150, 100);
+            $response = response($image_file->image->encode());
         }
 
-        if (str_contains($filename, '.gif') && !$thumb) {
-            return response($file_content, 200,
-                [
-                    'Content-Type'  => 'image/gif',
-                    'Cache-Control' => 'public,max-age=' . (3600 * 24 * 7) . ',s-maxage=' . (3600 * 24 * 7),
-                ])->setExpires(carbon()->addDays(7));
+        $headers = [
+            'Content-Type'  => extension_to_mime($image->image_extension),
+        ];
+
+        if ($image->private) {
+            $headers['X-Robots-Tag'] = 'noindex, noarchive';
         }
 
-        return $image_file->response()
-            ->setExpires(carbon()->addDays(7))
-            ->header('Cache-Control', 'public,max-age=' . (3600 * 24 * 7) . ',s-maxage=' . (3600 * 24 * 7));
+        if ($image->expire) {
+            $headers['Cache-Control'] = 'public,max-age=' . (carbon($image->expire)->diffInSeconds()) . ',s-maxage=' . (carbon($image->expire)->diffInSeconds());
+            $response->setExpires(carbon($image->expire));
+        } else {
+            $headers['Cache-Control'] = 'public,max-age=' . (3600 * 24 * 30) . ',s-maxage=' . (3600 * 24 * 30);
+            $response->setExpires(carbon()->addDays(30));
+        }
+
+        return $response->withHeaders($headers);
     }
 }
