@@ -22,8 +22,4 @@ Route::delete('image/delete', 'Image\UploadImageController@ajaxDelete')->middlew
 
 Route::post('image/create', 'Image\UploadImageController@create');
 
-Route::get('/', function () {
-    meta()->setMeta('ImageZ', 'ImageZ - Free and Secure Image Hosting & Photo Sharing');
-
-    return view('home');
-});
+Route::get('/', 'HomeController@index');

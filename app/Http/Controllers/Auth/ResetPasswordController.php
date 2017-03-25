@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserActivation;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller
@@ -19,6 +20,19 @@ class ResetPasswordController extends Controller
         parent::__construct();
 
         $this->meta->setMeta('Reset Password');
+    }
+
+    protected function resetPassword($user, $password)
+    {
+        $user->forceFill([
+            'password'       => bcrypt($password),
+            'remember_token' => Str::random(60),
+            'active'         => true,
+        ])->save();
+
+        UserActivation::where('user_id', $user->id)->delete();
+
+        $this->guard()->login($user);
     }
 
     protected function rules()

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-
 class HomeController extends Controller
 {
 
@@ -12,13 +10,10 @@ class HomeController extends Controller
         parent::__construct();
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        meta()->setMeta('ImageZ', 'ImageZ - Free and Secure Image Hosting & Photo Sharing');
+
         return view('home');
     }
 }

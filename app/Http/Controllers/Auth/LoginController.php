@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -17,5 +18,17 @@ class LoginController extends Controller
         parent::__construct();
 
         $this->meta->setMeta('Login');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if (!$user->active) {
+            flash('This account is not activated, Please check your email for activation link. If you did not receive the activation code, please click "forgot password" link on the login page.',
+                'warning');
+
+            $this->guard()->logout();
+
+            return redirect('login');
+        }
     }
 }
