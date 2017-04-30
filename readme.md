@@ -1,40 +1,73 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+## ImageHost
+imagehost is an online Image Hosting platform build using Laravel Framework.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+### Requirement
+- [**PHP**](https://php.net) 5.6.4+ (**7.0** preferred)
+- PHP Extensions: openssl, mcrypt and mbstring, phpredis
+- Database server: [MySQL](https://www.mysql.com) or [**MariaDB**](https://mariadb.org)
+- [Redis](http://redis.io) Server
+- [Composer](https://getcomposer.org)
+- [Node.js](https://nodejs.org/) with npm
 
-## About Laravel
+### Installation
+* clone the repository: `git clone https://github.com/bhutanio/imagehost.git imagehost`
+* create a database
+* create configuration env file `.env` refer to `.env.example`
+* install: `composer install --no-dev`
+* setup database tables: `php artisan migrate`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### Configuration
+#### Image Storage Location
+There are 3 locations you can configure using **APP_STORAGE** option in the **.env** file
+* ```APP_STORAGE=local``` : store image only in your local storage
+* ```APP_STORAGE=localcloud``` : store image in the cloud and keep a local cache
+* ```APP_STORAGE=cloud``` : store image only in the cloud
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### Setup Admin Account
+```bash
+php artisan tinker
+```
+```php
+DB::table('users')->where('id', 2)->update(['email'=>'myemail@example.com']);
+```
+Click on **forgot password** link on the **login page** and reset password for your admin user.
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+#### Setup Cron Job
+```bash
+crontab -e -u www-data
+```
+```bash
+* * * * * php /home/web/imagehost/artisan schedule:run >/dev/null 2>&1
+*/5 * * * * php /home/web/imagehost/artisan auth:clear-resets >/dev/null 2>&1
+```
 
-## Learning Laravel
+#### Setup Supervisor
+```bash
+nano /etc/supervisor/conf.d/imagehost.conf
+```
+```bash
+[program:imagehost-queue]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/web/imagehost/artisan queue:work --sleep=3 --tries=3
+autostart=true
+autorestart=true
+user=www-data
+numprocs=2
+```
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+#### Setup Google ReCaptcha
+Visit https://www.google.com/recaptcha/admin and register your site
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Get **Site key** and **Secret key**, add them in your .env file
+```$xslt
+...
+## Secret Key
+API_GOOGLE_RECAPTCHA='SECRET KEY'
 
-## Contributing
+## Site Key
+API_GOOGLE_RECAPTCHA_CLIENT='SITE KEY'
+...
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+### License
+imagehost is open source software licensed under the [MIT license](http://opensource.org/licenses/MIT).
