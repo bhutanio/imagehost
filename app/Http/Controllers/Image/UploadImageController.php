@@ -82,9 +82,9 @@ class UploadImageController extends Controller
 
         $image_file = $this->request->file('qqfile');
 
-        if ($image_file->getSize() > computer_size(20, 'mb')) {
+        if ($image_file->getSize() > computer_size(64, 'mb')) {
             $output['preventRetry'] = true;
-            $output['error'] = 'File size exceeds 20mb';
+            $output['error'] = 'File size exceeds 64mb';
 
             return response()->json($output);
         }

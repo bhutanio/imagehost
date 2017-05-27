@@ -65,7 +65,7 @@ const BASEURL = $('meta[name=_base_url]').attr('content');
         autoUpload: false,
         validation: {
             allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
-            sizeLimit: 20971520 // 20 Mb
+            sizeLimit: 67108864 // 64 Mb
         },
         callbacks: {
             onError: function (id, name, errorReason) {
