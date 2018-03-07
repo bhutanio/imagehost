@@ -72,7 +72,7 @@ class ViewImagesController extends Controller
 
         $response = response($file_content);
         if ($thumb) {
-            $image_file->fit(150, 100);
+            $image_file->fit(300, 170);
             $response = response($image_file->image->encode());
         }
 

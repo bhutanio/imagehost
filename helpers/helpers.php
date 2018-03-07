@@ -74,7 +74,7 @@ function image_embed_codes($images, $type = null)
         if ($type == 'html') {
             $embed .= '<a href="' . $image_url . '"><img src="' . $thumb_url . '"' . "></a>\n";
         } elseif ($type == 'bbcode') {
-            $embed .= '[img]' . $image_url . "[/img]\n";
+            $embed .= '[url=' . $image_url . '][img]' . $thumb_url . "[/img][/url]\n";
         } else {
             $embed .= $image_url . "\n";
         }
