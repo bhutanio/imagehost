@@ -8,15 +8,15 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "axios": "^0.15.3",
+        "axios": "^0.21.1",
         "bootstrap-sass": "^3.3.7",
         "bootswatch": "^3.3.7",
         "cross-env": "^3.2.3",
         "fine-uploader": "^5.14.1",
         "font-awesome": "^4.7.0",
-        "jquery": "^3.1.1",
+        "jquery": "^3.5.0",
         "laravel-mix": "^0.8.3",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.21",
         "sweetalert2": "^6.4.4",
         "vue": "^2.1.10"
     }
